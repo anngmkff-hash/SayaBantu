@@ -1,7 +1,7 @@
 // src/LoginPage.tsx
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom'; // <-- tambah Link
-import { IconContext } from 'react-icons/fa';
+import { IconContext } from 'react-icons';
 import { HiOutlineMail, HiOutlineLockClosed } from 'react-icons/hi';
 
 const LoginPage: React.FC = () => {
