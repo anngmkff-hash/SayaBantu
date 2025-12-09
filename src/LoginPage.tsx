@@ -1,7 +1,8 @@
 // src/LoginPage.tsx
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { Mail, Lock } from 'lucide-react';
+import { useNavigate, Link } from 'react-router-dom'; // <-- tambah Link
+import { IconContext } from 'react-icons';
+import { HiOutlineMail, HiOutlineLockClosed } from 'react-icons/hi';
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -58,7 +59,9 @@ const LoginPage: React.FC = () => {
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Mail className="h-5 w-5 text-gray-400" />
+                <IconContext.Provider value={{ className: 'h-5 w-5 text-gray-400' }}>
+                  <HiOutlineMail />
+                </IconContext.Provider>
               </div>
               <input
                 type="email"
@@ -78,7 +81,9 @@ const LoginPage: React.FC = () => {
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Lock className="h-5 w-5 text-gray-400" />
+                <IconContext.Provider value={{ className: 'h-5 w-5 text-gray-400' }}>
+                  <HiOutlineLockClosed />
+                </IconContext.Provider>
               </div>
               <input
                 type="password"
@@ -104,6 +109,7 @@ const LoginPage: React.FC = () => {
           )}
         </form>
 
+        {/* Jadikan link ke halaman reset */}
         <p className="text-sm text-center text-gray-600 mt-8">
           Forgot Password ?{' '}
           <Link to="/forgot-password" className="text-green-600 font-semibold hover:underline">
