@@ -1,4 +1,3 @@
-// src/components/HeroSection.tsx
 import React, { useEffect, useState } from 'react';
 import { ArrowRight, Clock } from 'lucide-react';
 import { api } from '../lib/api';

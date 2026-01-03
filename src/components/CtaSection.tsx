@@ -4,7 +4,6 @@ import { MessageCircle, Phone, ArrowRight } from 'lucide-react';
 
 const API_BASE = 'http://localhost:5000';
 
-// Fungsi normalisasi nomor WhatsApp (tidak berubah)
 const normalizeWa = (raw: string) => {
   const d = (raw || '').replace(/\D/g, '');
   if (!d) return '';
@@ -27,8 +26,7 @@ const CtaSection: React.FC = () => {
 
         setWaIntl(normalized);
 
-        // ✅ Gunakan operator nullish coalescing (??)
-        // agar pesan kosong dari DB tetap digunakan
+       
         setWaMessage(
           data?.whatsapp_message ?? 'Halo, Admin SayaBantu.com'
         );

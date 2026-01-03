@@ -1,69 +1,78 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const Login = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-    const handleUsernameChange = (e) => setUsername(e.target.value);
-    const handlePasswordChange = (e) => setPassword(e.target.value);
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError("");
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
+    try {
+      const response = await fetch("http://localhost:5000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-        try {
-            const response = await fetch('http://localhost:5000/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username, password }),
-            });
+      const data = await response.json();
 
-            const data = await response.json();
+      if (!response.ok) {
+        setError(data.error || "Login gagal");
+        return;
+      }
 
-            if (data.token) {
-                localStorage.setItem('authToken', data.token);
-                alert('Login successful!');
-                window.location.href = '/dashboard'; // Arahkan ke halaman dashboard
-            } else {
-                setError(data.error);
-            }
-        } catch (err) {
-            console.error('Error:', err);
-            setError('An error occurred');
-        }
-    };
+      // ================= PENTING =================
+      localStorage.setItem("token", data.token);       // HARUS "token"
+      localStorage.setItem("role", data.user.role);    // HARUS ada
+      // ===========================================
 
-    return (
-        <div className="login-container">
-            <h2>Login</h2>
-            <form onSubmit={handleLogin}>
-                <div>
-                    <label htmlFor="username">Username</label>
-                    <input
-                        type="text"
-                        id="username"
-                        value={username}
-                        onChange={handleUsernameChange}
-                        required
-                    />
-                </div>
-                <div>
-                    <label htmlFor="password">Password</label>
-                    <input
-                        type="password"
-                        id="password"
-                        value={password}
-                        onChange={handlePasswordChange}
-                        required
-                    />
-                </div>
-                {error && <p className="error">{error}</p>}
-                <button type="submit">Login</button>
-            </form>
+      // redirect admin
+      if (data.user.role === "admin") {
+        window.location.href = "/admin";
+      } else {
+        window.location.href = "/";
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Server error");
+    }
+  };
+
+  return (
+    <div className="login-container">
+      <h2>Login Admin</h2>
+
+      <form onSubmit={handleLogin}>
+        <div>
+          <label>Email</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
         </div>
-    );
+
+        <div>
+          <label>Password</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+
+        {error && <p style={{ color: "red" }}>{error}</p>}
+
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  );
 };
 
 export default Login;
